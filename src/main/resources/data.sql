@@ -13,3 +13,4 @@ VALUES
 ('alice_01','Alice Johnson','alice@example.com','9990001111','ACT', CURRENT_TIMESTAMP, 'system'),
 ('alice_01','Alice Johnson','alice+alt@example.com','9990003333','ACT', CURRENT_TIMESTAMP, 'system'),
 ('bob_123','Robert Smith','bob@example.com','9990002222','ACT', CURRENT_TIMESTAMP, 'system');
+                   
