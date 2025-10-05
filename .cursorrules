@@ -1,0 +1,6 @@
+Use Spring Boot 3.x and Jakarta packages.
+Keep layered structure: controller -> service -> repository; no business logic in controllers.
+Use DTOs for API payloads; do not expose JPA entities.
+Provide standard HTTP codes and JSON error bodies.
+Add JUnit 5 tests when adding features.
+H2 is for local only; never store real passwords in plain text (demo only).
