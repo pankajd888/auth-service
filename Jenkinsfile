@@ -2,14 +2,12 @@ pipeline {
     agent any
 
     environment {
-        // Change these values as per your setup
         DOCKER_IMAGE = "auth-service"
         DOCKER_HUB_USER = "pankajd888"
     }
 
     triggers {
-        // Auto trigger build on every GitHub push
-        githubPush()
+        githubPush() // auto-trigger on GitHub push
     }
 
     stages {
@@ -23,7 +21,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building Spring Boot application..."
-                sh './mvnw clean package -DskipTests'
+                // ✅ Use mvnw.cmd for Windows
+                bat 'mvnw.cmd clean package -DskipTests'
             }
         }
 
@@ -31,7 +30,8 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image..."
-                    sh "docker build -t ${DOCKER_HUB_USER}/${DOCKER_IMAGE}:latest ."
+                    // ✅ Windows-friendly Docker build
+                    bat "docker build -t ${DOCKER_HUB_USER}/${DOCKER_IMAGE}:latest ."
                 }
             }
         }
@@ -41,9 +41,12 @@ pipeline {
                 script {
                     echo "Pushing Docker image to Docker Hub..."
                     withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKERHUB_TOKEN')]) {
-                        sh """
-                            echo $DOCKERHUB_TOKEN | docker login -u ${DOCKER_HUB_USER} --password-stdin
+                        // ✅ Use Windows syntax for token and login
+                        bat """
+                            echo %DOCKERHUB_TOKEN% > token.txt
+                            docker login -u ${DOCKER_HUB_USER} --password-stdin < token.txt
                             docker push ${DOCKER_HUB_USER}/${DOCKER_IMAGE}:latest
+                            del token.txt
                         """
                     }
                 }
